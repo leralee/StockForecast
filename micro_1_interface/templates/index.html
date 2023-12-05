@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Прогнозирование доходности финансовых активов</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+</head>
+<body>
+
+    <div class="header">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" height="80">
+    </div>
+    <div class="main">
+        <div class="container">
+        <h1 class="title">Прогнозирование доходности финансовых активов</h1>
+        <form method="POST">
+            <div class="form-group mt-4">
+                <label for="columns">Выберите компании из списка:</label>
+                <select name="columns[]" id="columns" multiple class="form-control" style="height:500px;">
+                    {% for column in columns %}
+                        <option value="{{ column }}"
+                            {% if column in selected_columns %}
+                                selected
+                            {% endif %}
+                        >{{ loop.index }}.&nbsp;&nbsp;&nbsp;&nbsp;{{ column }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit">Спрогнозировать доход</button>
+        </form>
+        {% if selected_columns %}
+<!--            <h2 class="mt-5" style="color: rgb(255, 102, 0)">Оптимальные степени полиномов линейной регрессии:</h2>-->
+<!--            <ul>-->
+<!--                {% for column in selected_columns %}-->
+<!--                    <li>{{ column }}: {{ degrees[column] }}</li>-->
+<!--                {% endfor %}-->
+<!--            </ul>-->
+            <h2 class="mt-5" style="color: rgb(255, 102, 0)">Прогнозы по компаниям:</h2>
+            {% for column in selected_columns %}
+                <div id="chart_{{ loop.index }}"></div>
+            {% endfor %}
+            <h2 class="mt-5" style="color: rgb(255, 102, 0)">Усредненный прогноз по инвестиционному портфелю:</h2>
+            <div id="averaged_chart"></div>
+        {% endif %}
+    </div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    {% if selected_columns %}
+        <script>
+            {% for column in selected_columns %}
+                let trace_{{ loop.index }} = {
+                    x: {{ selected_columns | length }},
+                    y: [{{ forecasts[column] | join(', ') }}],
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: '{{ column }}',
+
+                    marker: { color: 'rgb(255,102,0)'},
+                    line: {color: 'rgb(255,102,0)'}
+
+                };
+                let data_{{ loop.index }} = [trace_{{ loop.index }}];
+                let layout_{{ loop.index }} = {
+                    title: 'Прогноз для {{ column }}. {{ results[column] }}',
+                    xaxis: {
+                        title: 'Дни прогнозируемого периода'
+                    },
+                    yaxis: {
+                        title: 'Прогнозные значения стоимости акций'
+                    }
+                };
+                Plotly.newPlot('chart_{{ loop.index }}', data_{{ loop.index }}, layout_{{ loop.index }});
+            {% endfor %}
+
+            let trace_averaged = {
+                x: {{ selected_columns | length }},
+                y: [{{ averaged_forecast | join(', ') }}],
+                type: 'scatter',
+                mode: 'lines',
+                name: 'Усредненный прогноз',
+                marker: { color: 'rgb(255,102,0)'},
+                line: {color: 'rgb(255,102,0)'}
+            };
+            let data_averaged = [trace_averaged];
+            let layout_averaged = {
+                title: 'Усредненный прогноз. {{ result_ave }}',
+                xaxis: {
+                    title: 'Дни прогнозируемого периода'
+                },
+                yaxis: {
+                    title: 'Прогнозные значения стоимости акций'
+                }
+            };
+            Plotly.newPlot('averaged_chart', data_averaged, layout_averaged);
+        </script>
+    {% endif %}
+</body>
+</html>

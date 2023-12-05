@@ -1,0 +1,38 @@
+.header {
+    height: 85px;
+    background: rgb(44,59,88);
+}
+
+.main {
+  background: radial-gradient(circle at center, #ffffff 0%, #e0e0e0 70%, #c0c0c0 100%);
+    min-height: 1500px;
+}
+
+.title {
+    padding-top: 15px;
+    color: rgb(255,102,0);
+}
+
+button {
+  background-color: rgb(255, 102, 0);
+  color: white; /* Цвет текста */
+  padding: 10px 20px; /* Внутренние отступы */
+  border: none; /* Убрать стандартный бордюр */
+  border-radius: 25px; /* Закругленные углы */
+  cursor: pointer; /* Курсор в виде руки при наведении */
+  transition: background-color 0.3s ease; /* Плавная анимация фона */
+  font-size: 16px; /* Размер шрифта */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Тень для более глубокого и "мягкого" вида */
+  outline: none; /* Убрать контур при фокусировке */
+}
+
+button:hover {
+  background-color: rgb(255, 122, 20); /* Светлее оттенок при наведении */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Увеличенная тень при наведении */
+}
+
+button:active {
+  background-color: rgb(230, 92, 0); /* Темнее оттенок при нажатии */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Уменьшенная тень при нажатии */
+}
+
