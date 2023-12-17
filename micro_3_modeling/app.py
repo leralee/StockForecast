@@ -28,11 +28,14 @@ def getprediction():
     dates = df['dates']
 
     model = mdl.LinearPolynomial(data, dates, column)
-    y_future = model.predict()
-    last_val = data[column].iloc[-1]
-
-    return [y_future.flatten().tolist(), last_val]
+    best_degree, best_rmse = model.calc_model()
+    y_future = model.predict(best_degree)
+    last_val = y_future[0]
+    return [best_degree, best_rmse, y_future.tolist(), last_val]
 
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=5003, debug=True)
+    host = os.getenv('HOST', '127.0.0.1')
+    port = os.getenv('PORT', 5003)
+    port = int(port)
+    app.run(host=host, port=port, debug=True)

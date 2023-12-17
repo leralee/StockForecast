@@ -1,11 +1,11 @@
 from flask import Flask, request, jsonify
 import pandas as pd
+import os
 
 app = Flask(__name__)
 
 @app.route('/getdataset', methods=['GET'])
 def getdataset():
-    # Отправляет весь датасет. Неэффективно, так как большой трафик
     dataset = request.args.get('dataset', 'close_price_stationary')
     df = pd.read_csv(f'datasets/{dataset}.csv', delimiter='\t')
     return jsonify(df.to_dict(orient='records'))
@@ -32,4 +32,7 @@ def getcolumn():
     return jsonify([dates, data])
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=5002, debug=True)
+    host = os.getenv('HOST', '127.0.0.1')
+    port = os.getenv('PORT', 5002)
+    port = int(port)
+    app.run(host=host, port=port, debug=True)

@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 
 def get_columns(dataset: str) -> list:
-    datasets_base_url = os.getenv('DATASETS_BASE_URL', 'http://localhost:5002')
+    datasets_base_url = os.getenv('DATASETS_URL', 'http://localhost:5002')
 
     # ЧТЕНИЕ ДАТАСЕТА ИЗ ВТОРОГО МИКРОСЕРВИСА
     try:
@@ -45,7 +45,8 @@ def index():
         results = {}
 
         for column in selected_columns:
-            y_future, last_val = get_prediction('close_price_stationary', column)
+            best_degree, best_rmse, y_future, last_val = get_prediction('close_price_stationary', column)
+            degrees[column] = best_degree
             forecasts[column] = [0 if val < 0 else val for val in list(y_future)]
             start = round(last_val, 2)
             end = round(y_future[-1], 2)
@@ -85,4 +86,7 @@ def index():
 
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=5001, debug=True)
+    host = os.getenv('HOST', '127.0.0.1')
+    port = os.getenv('PORT', 5001)
+    port = int(port)
+    app.run(host=host, port=port, debug=True)

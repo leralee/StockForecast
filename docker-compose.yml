@@ -5,27 +5,31 @@ services:
     environment:
       - DATASETS_URL=http://micro_2_datasets:5000
       - MODELING_BASE_URL=http://micro_3_modeling:5000
+      - HOST=0.0.0.0
+      - PORT=5000
     build:
       context: .
       dockerfile: micro_1_interface/Dockerfile
-    command: python ./app.py
     ports:
       - "5001:5000"
 
   micro_2_datasets:
+    environment:
+      - HOST=0.0.0.0
+      - PORT=5000
     build:
       context: .
       dockerfile: micro_2_datasets/Dockerfile
-    command: python ./app.py
     ports:
       - "5002:5000"
 
   micro_3_modeling:
     environment:
       - DATASETS_URL=http://micro_2_datasets:5000
+      - HOST=0.0.0.0
+      - PORT=5000
     build:
       context: .
       dockerfile: micro_3_modeling/Dockerfile
-    command: python ./app.py
     ports:
       - "5003:5000"

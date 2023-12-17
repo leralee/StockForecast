@@ -29,12 +29,12 @@
             <button type="submit">Спрогнозировать доход</button>
         </form>
         {% if selected_columns %}
-<!--            <h2 class="mt-5" style="color: rgb(255, 102, 0)">Оптимальные степени полиномов линейной регрессии:</h2>-->
-<!--            <ul>-->
-<!--                {% for column in selected_columns %}-->
-<!--                    <li>{{ column }}: {{ degrees[column] }}</li>-->
-<!--                {% endfor %}-->
-<!--            </ul>-->
+            <h2 class="mt-5" style="color: rgb(255, 102, 0)">Оптимальные степени полиномов линейной регрессии:</h2>
+            <ul>
+                {% for column in selected_columns %}
+                    <li>{{ column }}: {{ degrees[column] }}</li>
+                {% endfor %}
+            </ul>
             <h2 class="mt-5" style="color: rgb(255, 102, 0)">Прогнозы по компаниям:</h2>
             {% for column in selected_columns %}
                 <div id="chart_{{ loop.index }}"></div>

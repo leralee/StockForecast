@@ -4,7 +4,7 @@
 }
 
 .main {
-  background: radial-gradient(circle at center, #ffffff 0%, #e0e0e0 70%, #c0c0c0 100%);
+  /*background: radial-gradient(circle at center, #ffffff 0%, #e0e0e0 70%, #c0c0c0 100%);*/
     min-height: 1500px;
 }
 
